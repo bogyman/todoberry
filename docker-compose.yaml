@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  db:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    command: mongod
+
+  todoberry:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "7000:7000"
+    environment:
+      - PYTHONPATH=$PYTHONPATH:/code/
+      - TODOBERRY_MONGO_HOST=db
+    depends_on:
+      - db
